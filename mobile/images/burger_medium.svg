@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+    <!-- Нижняя булочка -->
+    <g id="bottom-bun" class="burger-layer">
+        <path d="M5,65 Q50,85 95,65 L95,85 Q50,100 5,85 Z" fill="#CD853F" stroke="#8B4513" stroke-width="1"/>
+        <path d="M10,68 Q50,83 90,68 L90,80 Q50,95 10,80 Z" fill="#D2691E" stroke="#8B4513" stroke-width="0.5"/>
+    </g>
+    <!-- Котлета -->
+    <g id="patty" class="burger-layer">
+        <ellipse cx="50" cy="50" rx="45" ry="12" fill="#8B4513" stroke="#5D2906" stroke-width="1"/>
+        <ellipse cx="50" cy="50" rx="40" ry="10" fill="#A0522D" stroke="#5D2906" stroke-width="0.5"/>
+    </g>
+    <!-- Салат -->
+    <g id="lettuce" class="burger-layer">
+        <path d="M20,45 Q30,35 40,45 Q50,30 60,45 Q70,35 80,45 Q50,25 20,45" fill="#90EE90" stroke="#228B22" stroke-width="0.5" fill-opacity="0.8"/>
+    </g>
+    <!-- Верхняя булочка -->
+    <g id="top-bun" class="burger-layer">
+        <path d="M5,30 Q50,10 95,30 L95,50 Q50,30 5,50 Z" fill="#F4A460" stroke="#D2691E" stroke-width="1"/>
+        <path d="M10,32 Q50,15 90,32 L90,45 Q50,28 10,45 Z" fill="#FFD700" stroke="#D2691E" stroke-width="0.5"/>
+    </g>
+    <!-- Семечки кунжута -->
+    <g id="sesame" class="burger-layer">
+        <ellipse cx="25" cy="28" rx="5" ry="2.5" fill="#FFF8DC" stroke="#DAA520" stroke-width="0.3"/>
+        <ellipse cx="50" cy="25" rx="6" ry="3" fill="#FFF8DC" stroke="#DAA520" stroke-width="0.3"/>
+        <ellipse cx="75" cy="28" rx="5" ry="2.5" fill="#FFF8DC" stroke="#DAA520" stroke-width="0.3"/>
+        <ellipse cx="35" cy="32" rx="4" ry="2" fill="#FFF8DC" stroke="#DAA520" stroke-width="0.3"/>
+        <ellipse cx="65" cy="32" rx="4" ry="2" fill="#FFF8DC" stroke="#DAA520" stroke-width="0.3"/>
+        <ellipse cx="45" cy="35" rx="3" ry="1.5" fill="#FFF8DC" stroke="#DAA520" stroke-width="0.3"/>
+        <ellipse cx="55" cy="35" rx="3" ry="1.5" fill="#FFF8DC" stroke="#DAA520" stroke-width="0.3"/>
+    </g>
+</svg>

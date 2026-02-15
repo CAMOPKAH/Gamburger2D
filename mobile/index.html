@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>GameBurger2d Mobile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+</head>
+<body>
+    <header class="header">
+        <h1><i class="fas fa-hamburger"></i> GAMEBURGER2D</h1>
+        <p class="subtitle">Уничтожай гамбургеры, солдат!</p>
+    </header>
+
+    <div class="game-container">
+        <!-- Панель статистики -->
+        <div class="stats-panel">
+            <div class="stat-box">
+                <h2><i class="fas fa-star"></i> ОЧКИ</h2>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat-box">
+                <h2><i class="fas fa-utensils"></i> СЪЕДЕНО</h2>
+                <div class="stat-value" id="burger-count">0</div>
+            </div>
+        </div>
+
+        <!-- Игровое поле (70%+ экрана) -->
+        <div class="game-field-container">
+            <div class="game-field" id="game-field">
+                <div class="instructions" id="instructions">
+                    <h3><i class="fas fa-info-circle"></i> ИНСТРУКЦИЯ</h3>
+                    <p>Тапай по гамбургерам, чтобы откусывать кусочки!</p>
+                    <p>Каждый откусанный кусочек = +1 очко</p>
+                    <p>Маленький: 3 кусочка</p>
+                    <p>Средний: 5 кусочков</p>
+                    <p>Большой: 8 кусочков</p>
+                    <p>Не дай гамбургерам уйти целыми!</p>
+                    <p class="start-hint">Нажми СТАРТ чтобы начать!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Панель управления (большие кнопки) -->
+        <div class="controls-panel">
+            <button id="start-btn" class="btn start-btn"><i class="fas fa-play"></i> СТАРТ</button>
+            <button id="pause-btn" class="btn pause-btn"><i class="fas fa-pause"></i> ПАУЗА</button>
+            <button id="sound-btn" class="btn sound-btn"><i class="fas fa-volume-up"></i> ЗВУК</button>
+            <button id="help-btn" class="btn help-btn"><i class="fas fa-question-circle"></i> ПОМОЩЬ</button>
+        </div>
+
+        <!-- Панель цитат майора Пейна -->
+        <div class="quote-panel">
+            <h2><i class="fas fa-bullhorn"></i> КОМАНДИР ПЕЙН</h2>
+            <div class="quote-display" id="quote-display">
+                <p id="current-quote">Сегодня отличный день для уничтожения гамбургера!</p>
+            </div>
+            <div class="quote-controls">
+                <button id="next-quote-btn" class="btn small-btn"><i class="fas fa-forward"></i> Следующая</button>
+                <button id="speak-btn" class="btn small-btn"><i class="fas fa-volume-up"></i> Озвучить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Скрипты -->
+    <script src="quotes.js"></script>
+    <script src="game.js"></script>
+
+    <!-- PWA manifest (опционально) -->
+    <link rel="manifest" href="manifest.json">
+</body>
+</html>

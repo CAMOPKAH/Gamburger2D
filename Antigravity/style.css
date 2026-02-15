@@ -1,0 +1,707 @@
+/* ============================
+   GameBurger2D — Antigravity UI
+   Полностью адаптивный интерфейс
+   ============================ */
+
+/* --- Reset & Base --- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+
+:root {
+    --bg-dark: #0a0a1a;
+    --bg-panel: rgba(10, 15, 30, 0.92);
+    --accent: #ff5e00;
+    --accent-glow: rgba(255, 94, 0, 0.5);
+    --accent2: #00c3ff;
+    --accent2-glow: rgba(0, 195, 255, 0.4);
+    --green: #00e676;
+    --yellow: #ffab00;
+    --red: #ff1744;
+    --text: #e0e0e0;
+    --text-bright: #ffffff;
+    --border: rgba(255, 255, 255, 0.08);
+    --radius: 12px;
+    --hud-h: 52px;
+    --ctrl-h: 48px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --font-ui: 'Orbitron', 'Segoe UI', sans-serif;
+    --font-body: 'Russo One', sans-serif;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-dark);
+    color: var(--text);
+    font-family: var(--font-body);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(ellipse at 50% 30%, #1a1a3e 0%, #0a0a1a 70%);
+}
+
+/* --- HUD (top bar) --- */
+.hud {
+    flex: 0 0 var(--hud-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+}
+
+.hud-left {
+    flex: 0 0 auto;
+}
+
+.hud-logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-ui);
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--accent);
+}
+
+.hud-logo i {
+    font-size: 1.3rem;
+}
+
+.hud-title .accent {
+    color: var(--accent2);
+}
+
+.hud-center {
+    display: flex;
+    gap: 20px;
+}
+
+.hud-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+.hud-stat i {
+    color: var(--accent);
+    font-size: 1rem;
+}
+
+.hud-stat-value {
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--text-bright);
+    text-shadow: 0 0 8px var(--accent-glow);
+    min-width: 32px;
+    text-align: center;
+    transition: transform 0.15s ease;
+}
+
+.hud-stat-value.pulse {
+    animation: stat-pulse 0.3s ease;
+}
+
+@keyframes stat-pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.35);
+        color: var(--accent);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.hud-right {
+    display: flex;
+    gap: 6px;
+}
+
+.hud-btn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+}
+
+.hud-btn:active {
+    transform: scale(0.9);
+    background: var(--accent);
+    color: #000;
+}
+
+/* --- Game Field --- */
+.game-field {
+    flex: 1 1 0;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(255, 94, 0, 0.03) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(0, 10, 25, 0.95) 0%, rgba(0, 5, 15, 0.98) 100%);
+    border-top: 2px solid rgba(255, 94, 0, 0.2);
+    border-bottom: 2px solid rgba(255, 94, 0, 0.2);
+    /* subtle grid */
+    background-image:
+        radial-gradient(ellipse at 50% 50%, rgba(255, 94, 0, 0.03) 0%, transparent 70%),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+}
+
+/* --- Instructions overlay --- */
+.instructions {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+}
+
+.instructions-inner {
+    max-width: 380px;
+    width: 90%;
+    padding: 32px 24px;
+    background: var(--bg-panel);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: 0 0 40px var(--accent-glow);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.instructions-icon {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-shadow: 0 0 20px var(--accent-glow);
+}
+
+.instructions-inner h2 {
+    font-family: var(--font-ui);
+    font-size: 1.3rem;
+    color: var(--accent);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.instructions-inner p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+.instructions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.instructions-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+.instructions-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-family: var(--font-ui);
+    font-weight: 900;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.instructions-badge.small {
+    background: var(--green);
+    color: #000;
+}
+
+.instructions-badge.medium {
+    background: var(--yellow);
+    color: #000;
+}
+
+.instructions-badge.large {
+    background: var(--red);
+    color: #fff;
+}
+
+.btn-start {
+    width: 100%;
+    padding: 14px 24px;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 1rem;
+    color: #000;
+    background: linear-gradient(135deg, var(--accent), #ff8c00);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 20px var(--accent-glow);
+    touch-action: manipulation;
+}
+
+.btn-start:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 10px var(--accent-glow);
+}
+
+/* --- Controls bar (bottom) --- */
+.controls-bar {
+    flex: 0 0 var(--ctrl-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    padding-bottom: var(--safe-bottom);
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+}
+
+.controls-left {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.quote-ticker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.quote-ticker i {
+    color: var(--red);
+    flex-shrink: 0;
+    font-size: 0.85rem;
+}
+
+.quote-ticker span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.controls-right {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.ctrl-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+}
+
+.ctrl-btn:active {
+    transform: scale(0.9);
+    background: var(--accent2);
+    color: #000;
+}
+
+/* --- Burgers --- */
+.burger {
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    z-index: 10;
+}
+
+.burger:active {
+    transform: translate(-50%, -50%) scale(1.2) !important;
+}
+
+.burger.eaten {
+    opacity: 0.4;
+    filter: grayscale(70%);
+    pointer-events: none;
+}
+
+.burger-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.25s ease;
+    transform-origin: center;
+    pointer-events: none;
+}
+
+/* --- Health bar --- */
+.health-bar {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    height: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+}
+
+.health-bar-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--green), #7fff00);
+    border-radius: 2px;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+/* --- Notification toast --- */
+.notification {
+    position: fixed;
+    top: calc(var(--hud-h) + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: var(--bg-panel);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 8px 20px;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    color: var(--text-bright);
+    box-shadow: 0 4px 20px var(--accent-glow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 200;
+    max-width: 90%;
+    text-align: center;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* --- Animations --- */
+.pulse {
+    animation: pulse-anim 0.3s ease;
+}
+
+@keyframes pulse-anim {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bounce {
+    animation: bounce-anim 0.35s ease;
+}
+
+@keyframes bounce-anim {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-6px);
+    }
+
+    60% {
+        transform: translateY(-3px);
+    }
+}
+
+/* --- Fullscreen adjustments --- */
+:fullscreen body,
+:-webkit-full-screen body {
+    background: var(--bg-dark);
+}
+
+/* --- Responsive Tweaks ---
+   System designed mobile-first.
+   On wider screens we allow more breathing room.
+*/
+
+/* Larger phones & small tablets */
+@media (min-width: 480px) {
+    .hud-logo {
+        font-size: 1.2rem;
+    }
+
+    .hud-stat-value {
+        font-size: 1.35rem;
+    }
+
+    .instructions-inner {
+        max-width: 420px;
+        padding: 36px 28px;
+    }
+
+    .quote-ticker {
+        font-size: 0.8rem;
+    }
+}
+
+/* Tablets */
+@media (min-width: 768px) {
+    :root {
+        --hud-h: 56px;
+        --ctrl-h: 52px;
+    }
+
+    .hud {
+        padding: 0 20px;
+    }
+
+    .hud-logo {
+        font-size: 1.3rem;
+        gap: 8px;
+    }
+
+    .hud-stat {
+        font-size: 1rem;
+        gap: 8px;
+    }
+
+    .hud-stat-value {
+        font-size: 1.5rem;
+    }
+
+    .hud-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+
+    .controls-bar {
+        padding: 0 20px;
+    }
+
+    .ctrl-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .quote-ticker {
+        font-size: 0.85rem;
+    }
+
+    .instructions-inner {
+        max-width: 460px;
+    }
+
+    .btn-start {
+        font-size: 1.1rem;
+        padding: 16px 28px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    :root {
+        --hud-h: 60px;
+        --ctrl-h: 54px;
+    }
+
+    .hud {
+        padding: 0 28px;
+    }
+
+    .hud-logo {
+        font-size: 1.4rem;
+    }
+
+    .hud-center {
+        gap: 30px;
+    }
+
+    .hud-stat {
+        font-size: 1.05rem;
+    }
+
+    .hud-stat-value {
+        font-size: 1.6rem;
+    }
+
+    .hud-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .controls-bar {
+        padding: 0 28px;
+    }
+
+    .ctrl-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .quote-ticker {
+        font-size: 0.9rem;
+    }
+}
+
+/* Large desktop */
+@media (min-width: 1440px) {
+    :root {
+        --hud-h: 64px;
+        --ctrl-h: 56px;
+    }
+
+    .hud-logo {
+        font-size: 1.5rem;
+    }
+
+    .hud-stat-value {
+        font-size: 1.8rem;
+    }
+}
+
+/* Landscape phones — shrink HUD aggressively */
+@media (max-height: 500px) and (orientation: landscape) {
+    :root {
+        --hud-h: 40px;
+        --ctrl-h: 38px;
+    }
+
+    .hud-logo {
+        font-size: 0.9rem;
+    }
+
+    .hud-logo i {
+        display: none;
+    }
+
+    .hud-stat {
+        font-size: 0.75rem;
+    }
+
+    .hud-stat-value {
+        font-size: 1rem;
+    }
+
+    .hud-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+
+    .ctrl-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+
+    .quote-ticker {
+        font-size: 0.7rem;
+    }
+
+    .instructions-inner {
+        max-width: 340px;
+        padding: 16px 18px;
+    }
+
+    .instructions-inner h2 {
+        font-size: 1rem;
+    }
+
+    .instructions-inner p {
+        font-size: 0.8rem;
+    }
+
+    .instructions-badge {
+        width: 26px;
+        height: 26px;
+        font-size: 0.7rem;
+    }
+
+    .btn-start {
+        padding: 10px 18px;
+        font-size: 0.85rem;
+    }
+}

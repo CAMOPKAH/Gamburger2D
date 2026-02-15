@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a1a">
+    <meta name="description" content="GameBurger2D — уничтожай гамбургеры в стиле майора Пейна!">
+    <title>GameBurger2D — Уничтожай гамбургеры!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Russo+One&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Верхняя панель (HUD) -->
+    <header id="hud" class="hud">
+        <div class="hud-left">
+            <div class="hud-logo">
+                <i class="fas fa-hamburger"></i>
+                <span class="hud-title">BURGER<span class="accent">2D</span></span>
+            </div>
+        </div>
+        <div class="hud-center">
+            <div class="hud-stat" id="hud-score-box">
+                <i class="fas fa-star"></i>
+                <span id="score" class="hud-stat-value">0</span>
+            </div>
+            <div class="hud-stat" id="hud-eaten-box">
+                <i class="fas fa-utensils"></i>
+                <span id="burger-count" class="hud-stat-value">0</span>
+            </div>
+        </div>
+        <div class="hud-right">
+            <button id="fullscreen-btn" class="hud-btn" title="Полноэкранный режим">
+                <i class="fas fa-expand"></i>
+            </button>
+            <button id="sound-btn" class="hud-btn" title="Звук">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Игровое поле -->
+    <main id="game-field" class="game-field">
+        <div id="instructions" class="instructions">
+            <div class="instructions-inner">
+                <div class="instructions-icon"><i class="fas fa-crosshairs"></i></div>
+                <h2>МИССИЯ: УНИЧТОЖЕНИЕ</h2>
+                <p>Кликай / тапай по гамбургерам чтобы откусывать кусочки!</p>
+                <div class="instructions-grid">
+                    <div class="instructions-item">
+                        <span class="instructions-badge small">S</span>
+                        <span>Маленький — 3 кусочка</span>
+                    </div>
+                    <div class="instructions-item">
+                        <span class="instructions-badge medium">M</span>
+                        <span>Средний — 5 кусочков</span>
+                    </div>
+                    <div class="instructions-item">
+                        <span class="instructions-badge large">L</span>
+                        <span>Большой — 8 кусочков</span>
+                    </div>
+                </div>
+                <button id="start-btn" class="btn-start">
+                    <i class="fas fa-play"></i> НАЧАТЬ МИССИЮ
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Нижняя панель управления -->
+    <footer id="controls" class="controls-bar">
+        <div class="controls-left">
+            <div class="quote-ticker" id="quote-ticker">
+                <i class="fas fa-bullhorn"></i>
+                <span id="current-quote">Уничтожай гамбургеры, солдат!</span>
+            </div>
+        </div>
+        <div class="controls-right">
+            <button id="pause-btn" class="ctrl-btn" title="Пауза">
+                <i class="fas fa-pause"></i>
+            </button>
+            <button id="help-btn" class="ctrl-btn" title="Помощь">
+                <i class="fas fa-question"></i>
+            </button>
+            <button id="speak-btn" class="ctrl-btn" title="Озвучить">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification"></div>
+
+    <script src="quotes.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>
